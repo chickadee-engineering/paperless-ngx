@@ -4,7 +4,6 @@ import {
   FILTER_CORRESPONDENT,
   FILTER_HAS_ANY_TAG,
   FILTER_HAS_TAGS_ALL,
-  FILTER_HAS_TAGS_ANY,
 } from '../data/filter-rule-type'
 import { paramsToViewState } from './query-params'
 import { paramsFromViewState } from './query-params'
