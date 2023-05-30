@@ -5,9 +5,7 @@ import { routes } from '../app-routing.module'
 import { Component } from '@angular/core'
 import { ComponentCanDeactivate, DirtyDocGuard } from './dirty-doc.guard'
 
-@Component({
-  selector: 'stub',
-})
+@Component({})
 class GenericDirtyDocComponent implements ComponentCanDeactivate {
   canDeactivate: () => boolean
 }
