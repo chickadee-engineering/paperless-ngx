@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs'
 import { ConfirmDialogComponent } from '../components/common/confirm-dialog/confirm-dialog.component'
 import { Params, Router, convertToParamMap } from '@angular/router'
 import {
-  FILTER_CORRESPONDENT,
   FILTER_HAS_TAGS_ALL,
   FILTER_HAS_TAGS_ANY,
 } from '../data/filter-rule-type'
