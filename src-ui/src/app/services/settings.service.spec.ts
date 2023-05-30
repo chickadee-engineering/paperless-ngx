@@ -13,14 +13,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AppModule } from '../app.module'
 
-window.ResizeObserver =
-  window.ResizeObserver ||
-  jest.fn().mockImplementation(() => ({
-    disconnect: jest.fn(),
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  }))
-
 describe('SettingsService', () => {
   let httpTestingController: HttpTestingController
   let settingsService: SettingsService
