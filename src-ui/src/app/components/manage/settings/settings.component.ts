@@ -44,6 +44,7 @@ import { MailAccountService } from 'src/app/services/rest/mail-account.service'
 import { MailRuleService } from 'src/app/services/rest/mail-rule.service'
 import { MailAccountEditDialogComponent } from '../../common/edit-dialog/mail-account-edit-dialog/mail-account-edit-dialog.component'
 import { MailRuleEditDialogComponent } from '../../common/edit-dialog/mail-rule-edit-dialog/mail-rule-edit-dialog.component'
+import { EditDialogMode } from '../../common/edit-dialog/edit-dialog.component'
 
 enum SettingsNavIDs {
   General = 1,
@@ -646,7 +647,9 @@ export class SettingsComponent
       backdrop: 'static',
       size: 'xl',
     })
-    modal.componentInstance.dialogMode = user ? 'edit' : 'create'
+    modal.componentInstance.dialogMode = user
+      ? EditDialogMode.EDIT
+      : EditDialogMode.CREATE
     modal.componentInstance.object = user
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
@@ -718,7 +721,9 @@ export class SettingsComponent
       backdrop: 'static',
       size: 'lg',
     })
-    modal.componentInstance.dialogMode = group ? 'edit' : 'create'
+    modal.componentInstance.dialogMode = group
+      ? EditDialogMode.EDIT
+      : EditDialogMode.CREATE
     modal.componentInstance.object = group
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
@@ -780,7 +785,9 @@ export class SettingsComponent
       backdrop: 'static',
       size: 'xl',
     })
-    modal.componentInstance.dialogMode = account ? 'edit' : 'create'
+    modal.componentInstance.dialogMode = account
+      ? EditDialogMode.EDIT
+      : EditDialogMode.CREATE
     modal.componentInstance.object = account
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))
@@ -842,7 +849,9 @@ export class SettingsComponent
       backdrop: 'static',
       size: 'xl',
     })
-    modal.componentInstance.dialogMode = rule ? 'edit' : 'create'
+    modal.componentInstance.dialogMode = rule
+      ? EditDialogMode.EDIT
+      : EditDialogMode.CREATE
     modal.componentInstance.object = rule
     modal.componentInstance.succeeded
       .pipe(takeUntil(this.unsubscribeNotifier))

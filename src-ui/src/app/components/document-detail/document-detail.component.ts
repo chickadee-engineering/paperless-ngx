@@ -62,8 +62,9 @@ import { UserService } from 'src/app/services/rest/user.service'
 import { PaperlessDocumentNote } from 'src/app/data/paperless-document-note'
 import { HttpClient } from '@angular/common/http'
 import { ComponentWithPermissions } from '../with-permissions/with-permissions.component'
-import { FilterRule } from 'src/app/data/filter-rule'
+import { EditDialogMode } from '../common/edit-dialog/edit-dialog.component'
 import { ObjectWithId } from 'src/app/data/object-with-id'
+import { FilterRule } from 'src/app/data/filter-rule'
 import { ISODateAdapter } from 'src/app/utils/ngb-iso-date-adapter'
 
 enum DocumentDetailNavIDs {
@@ -438,7 +439,7 @@ export class DocumentDetailComponent
     var modal = this.modalService.open(DocumentTypeEditDialogComponent, {
       backdrop: 'static',
     })
-    modal.componentInstance.dialogMode = 'create'
+    modal.componentInstance.dialogMode = EditDialogMode.CREATE
     if (newName) modal.componentInstance.object = { name: newName }
     modal.componentInstance.succeeded
       .pipe(
@@ -459,7 +460,7 @@ export class DocumentDetailComponent
     var modal = this.modalService.open(CorrespondentEditDialogComponent, {
       backdrop: 'static',
     })
-    modal.componentInstance.dialogMode = 'create'
+    modal.componentInstance.dialogMode = EditDialogMode.CREATE
     if (newName) modal.componentInstance.object = { name: newName }
     modal.componentInstance.succeeded
       .pipe(
@@ -482,7 +483,7 @@ export class DocumentDetailComponent
     var modal = this.modalService.open(StoragePathEditDialogComponent, {
       backdrop: 'static',
     })
-    modal.componentInstance.dialogMode = 'create'
+    modal.componentInstance.dialogMode = EditDialogMode.CREATE
     if (newName) modal.componentInstance.object = { name: newName }
     modal.componentInstance.succeeded
       .pipe(
