@@ -34,7 +34,7 @@ describe('TasksService', () => {
     expect(req.request.method).toEqual('GET')
   })
 
-  it('calls acknowledge_tasks api endpoint on dismiss', () => {
+  it('calls acknowledge_tasks api endpoint on dismiss and reloads', () => {
     tasksService.dismissTasks(new Set([1, 2, 3]))
     const req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}acknowledge_tasks/`
@@ -43,9 +43,13 @@ describe('TasksService', () => {
     expect(req.request.body).toEqual({
       tasks: [1, 2, 3],
     })
+    req.flush([])
+    // reload is then called
+    httpTestingController.expectOne(`${environment.apiBaseUrl}tasks/`).flush([])
   })
 
   it('sorts tasks returned from api', () => {
+    expect(tasksService.total).toEqual(0)
     const mockTasks = [
       {
         type: PaperlessTaskType.File,
