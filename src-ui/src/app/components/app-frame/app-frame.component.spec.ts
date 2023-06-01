@@ -28,6 +28,16 @@ import { DocumentDetailComponent } from '../document-detail/document-detail.comp
 import { SearchService } from 'src/app/services/rest/search.service'
 import { DocumentListViewService } from 'src/app/services/document-list-view.service'
 import { FILTER_FULLTEXT_QUERY } from 'src/app/data/filter-rule-type'
+import { routes } from 'src/app/app-routing.module'
+import { PermissionsGuard } from 'src/app/guards/permissions.guard'
+
+window.ResizeObserver =
+  window.ResizeObserver ||
+  jest.fn().mockImplementation(() => ({
+    disconnect: jest.fn(),
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+  }))
 
 const document = { id: 2, title: 'Hello world' }
 
@@ -51,7 +61,7 @@ describe('AppFrameComponent', () => {
       imports: [
         HttpClientTestingModule,
         BrowserModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes(routes),
         NgbModule,
         FormsModule,
         ReactiveFormsModule,
@@ -81,6 +91,7 @@ describe('AppFrameComponent', () => {
             },
           },
         },
+        PermissionsGuard,
       ],
     }).compileComponents()
 

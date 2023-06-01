@@ -18,6 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { SettingsService } from 'src/app/services/settings.service'
 import { ClearableBadgeComponent } from '../clearable-badge/clearable-badge.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { CustomDatePipe } from 'src/app/pipes/custom-date.pipe'
+import { DatePipe } from '@angular/common'
 
 describe('DateDropdownComponent', () => {
   let component: DateDropdownComponent
@@ -27,8 +29,12 @@ describe('DateDropdownComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [DateDropdownComponent, ClearableBadgeComponent],
-      providers: [SettingsService],
+      declarations: [
+        DateDropdownComponent,
+        ClearableBadgeComponent,
+        CustomDatePipe,
+      ],
+      providers: [SettingsService, CustomDatePipe, DatePipe],
       imports: [
         HttpClientTestingModule,
         NgbModule,

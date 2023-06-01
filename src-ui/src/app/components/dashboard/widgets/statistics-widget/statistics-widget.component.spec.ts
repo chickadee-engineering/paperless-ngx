@@ -1,10 +1,4 @@
-import {
-  TestBed,
-  discardPeriodicTasks,
-  fakeAsync,
-  flush,
-  tick,
-} from '@angular/core/testing'
+import { TestBed } from '@angular/core/testing'
 import { StatisticsWidgetComponent } from './statistics-widget.component'
 import { ComponentFixture } from '@angular/core/testing'
 import {
@@ -14,6 +8,9 @@ import {
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { WidgetFrameComponent } from '../widget-frame/widget-frame.component'
 import { environment } from 'src/environments/environment'
+import { RouterTestingModule } from '@angular/router/testing'
+import { routes } from 'src/app/app-routing.module'
+import { PermissionsGuard } from 'src/app/guards/permissions.guard'
 
 describe('StatisticsWidgetComponent', () => {
   let component: StatisticsWidgetComponent
@@ -23,7 +20,12 @@ describe('StatisticsWidgetComponent', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [StatisticsWidgetComponent, WidgetFrameComponent],
-      imports: [HttpClientTestingModule, NgbModule],
+      providers: [PermissionsGuard],
+      imports: [
+        HttpClientTestingModule,
+        NgbModule,
+        RouterTestingModule.withRoutes(routes),
+      ],
     }).compileComponents()
 
     fixture = TestBed.createComponent(StatisticsWidgetComponent)
@@ -34,14 +36,14 @@ describe('StatisticsWidgetComponent', () => {
     fixture.detectChanges()
   })
 
-  it('should call api statistics endpoint', fakeAsync(() => {
+  it('should call api statistics endpoint', () => {
     const req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}statistics/`
     )
     expect(req.request.method).toEqual('GET')
-  }))
+  })
 
-  it('should display inbox link with count', fakeAsync(() => {
+  it('should display inbox link with count', () => {
     const mockStats = {
       documents_total: 200,
       documents_inbox: 18,
@@ -64,9 +66,9 @@ describe('StatisticsWidgetComponent', () => {
     expect(link).not.toBeNull()
     link.click()
     expect(goToInboxSpy).toHaveBeenCalled()
-  }))
+  })
 
-  it('should display mime types with counts', fakeAsync(() => {
+  it('should display mime types with counts', () => {
     const mockStats = {
       documents_total: 200,
       documents_inbox: 18,
@@ -104,5 +106,5 @@ describe('StatisticsWidgetComponent', () => {
     expect(fixture.nativeElement.textContent.replace(/\s/g, '')).toContain(
       'CSV(10%)'
     )
-  }))
+  })
 })
