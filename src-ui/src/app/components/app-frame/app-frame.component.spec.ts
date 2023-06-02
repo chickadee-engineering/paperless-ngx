@@ -31,14 +31,6 @@ import { FILTER_FULLTEXT_QUERY } from 'src/app/data/filter-rule-type'
 import { routes } from 'src/app/app-routing.module'
 import { PermissionsGuard } from 'src/app/guards/permissions.guard'
 
-window.ResizeObserver =
-  window.ResizeObserver ||
-  jest.fn().mockImplementation(() => ({
-    disconnect: jest.fn(),
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  }))
-
 const document = { id: 2, title: 'Hello world' }
 
 describe('AppFrameComponent', () => {

@@ -24,6 +24,8 @@ Object.defineProperty(window, 'getComputedStyle', {
   value: () => ['-webkit-appearance'],
 })
 
+Object.defineProperty(window, 'ResizeObserver', { value: mock() })
+
 Object.defineProperty(document.body.style, 'transform', {
   value: () => {
     return {

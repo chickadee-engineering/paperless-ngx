@@ -11,14 +11,6 @@ import { TourService } from 'ngx-ui-tour-ng-bootstrap'
 import { ToastService } from '../services/toast.service'
 import { RouterState } from '@angular/router'
 
-window.ResizeObserver =
-  window.ResizeObserver ||
-  jest.fn().mockImplementation(() => ({
-    disconnect: jest.fn(),
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  }))
-
 describe('PermissionsGuard', () => {
   let guard: PermissionsGuard
   let permissionsService: PermissionsService
