@@ -6,6 +6,7 @@ import {
   fakeAsync,
   tick,
 } from '@angular/core/testing'
+import { FormsModule } from '@angular/forms'
 import { By } from '@angular/platform-browser'
 import { Router } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing'
@@ -41,6 +42,7 @@ describe('AppComponent', () => {
       providers: [],
       imports: [
         HttpClientTestingModule,
+        FormsModule,
         TourNgBootstrapModule,
         RouterTestingModule.withRoutes(routes),
         NgxFileDropModule,

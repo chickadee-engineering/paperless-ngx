@@ -698,9 +698,17 @@ class PostDocumentSerializer(serializers.Serializer):
         required=False,
     )
 
-    document = serializers.FileField(
-        label="Document",
+    filename = serializers.CharField(
+        label="Filename",
         write_only=True,
+        required=False,
+    )
+
+    document = serializers.ListField(
+        child=serializers.FileField(
+            label="Document",
+            write_only=True,
+        ),
     )
 
     title = serializers.CharField(
@@ -741,34 +749,42 @@ class PostDocumentSerializer(serializers.Serializer):
         max_value=Document.ARCHIVE_SERIAL_NUMBER_MAX,
     )
 
-    def validate_document(self, document):
-        document_data = document.file.read()
-        mime_type = magic.from_buffer(document_data, mime=True)
+    def to_internal_value(self, data):
+        if "correspondent" in data:
+            data["correspondent"] = data["correspondent"].id
 
-        if not is_mime_type_supported(mime_type):
+        if "document_type" in data:
+            data["document_type"] = data["document_type"].id
+
+        if "tags" in data:
+            data["tags"] = [tag.id for tag in data.getlist("tags")]
+
+        num_documents = len(data.getlist("document"))
+
+        if num_documents == 1 and "filename" not in data:
+            data["filename"] = data["document"].name
+
+        return super().to_internal_value(data)
+
+    def validate(self, data):
+        if len(data["document"]) != 1 and "filename" not in data:
             raise serializers.ValidationError(
-                _("File type %(type)s not supported") % {"type": mime_type},
+                _("Filename entry is required if multiple documents are provided"),
             )
 
-        return document.name, document_data
+        return data
 
-    def validate_correspondent(self, correspondent):
-        if correspondent:
-            return correspondent.id
-        else:
-            return None
+    def validate_document(self, document):
+        for f in document:
+            mime_type = magic.from_buffer(f.file.read(), mime=True)
+            f.file.seek(0)
 
-    def validate_document_type(self, document_type):
-        if document_type:
-            return document_type.id
-        else:
-            return None
+            if not is_mime_type_supported(mime_type):
+                raise serializers.ValidationError(
+                    _("File type %(type)s not supported") % {"type": mime_type},
+                )
 
-    def validate_tags(self, tags):
-        if tags:
-            return [tag.id for tag in tags]
-        else:
-            return None
+        return document
 
 
 class BulkDownloadSerializer(DocumentListSerializer):

@@ -269,7 +269,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public dropped(files: NgxFileDropEntry[]) {
     this.fileLeave(true)
-    this.uploadDocumentsService.uploadFiles(files)
+    this.uploadDocumentsService.uploadFiles(files, false, null)
     this.toastService.showInfo($localize`Initiating upload...`, 3000)
   }
 }
