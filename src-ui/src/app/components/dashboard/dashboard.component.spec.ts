@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
+import { FormsModule } from '@angular/forms'
 import { NgbAlertModule, NgbAlert } from '@ng-bootstrap/ng-bootstrap'
 import { PermissionsGuard } from 'src/app/guards/permissions.guard'
 import { DashboardComponent } from './dashboard.component'
@@ -69,6 +70,7 @@ describe('DashboardComponent', () => {
         },
       ],
       imports: [
+        FormsModule,
         NgbAlertModule,
         HttpClientTestingModule,
         NgxFileDropModule,

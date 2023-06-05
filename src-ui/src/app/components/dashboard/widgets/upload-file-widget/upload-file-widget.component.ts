@@ -1,4 +1,6 @@
 import { Component } from '@angular/core'
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop'
+import { FormsModule } from '@angular/forms'
 import { NgxFileDropEntry } from 'ngx-file-drop'
 import { ComponentWithPermissions } from 'src/app/components/with-permissions/with-permissions.component'
 import {
@@ -17,6 +19,9 @@ const MAX_ALERTS = 5
 })
 export class UploadFileWidgetComponent extends ComponentWithPermissions {
   alertsExpanded = false
+  stagedFiles = []
+  mergedFilename = ''
+  mergeStagedFiles = false
 
   constructor(
     private consumerStatusService: ConsumerStatusService,
@@ -114,6 +119,28 @@ export class UploadFileWidgetComponent extends ComponentWithPermissions {
   public fileLeave(event) {}
 
   public dropped(files: NgxFileDropEntry[]) {
-    this.uploadDocumentsService.uploadFiles(files)
+    if (this.mergeStagedFiles) {
+      this.stagedFiles.push(...files)
+    } else {
+      this.uploadDocumentsService.uploadFiles(files, false, null)
+    }
+  }
+
+  public reorderStaged(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.stagedFiles, event.previousIndex, event.currentIndex)
+  }
+
+  public unstage(idx: number) {
+    this.stagedFiles.splice(idx, 1)
+  }
+
+  public uploadStaged() {
+    this.uploadDocumentsService.uploadFiles(
+      this.stagedFiles,
+      this.mergeStagedFiles,
+      this.mergeStagedFiles ? this.mergedFilename : null
+    )
+    this.stagedFiles = []
+    this.mergedFilename = ''
   }
 }

@@ -12,6 +12,7 @@ from time import mktime
 from unicodedata import normalize
 from urllib.parse import quote
 
+import img2pdf
 import pathvalidate
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -754,10 +755,20 @@ class PostDocumentView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        doc_name, doc_data = serializer.validated_data.get("document")
-        correspondent_id = serializer.validated_data.get("correspondent")
-        document_type_id = serializer.validated_data.get("document_type")
-        tag_ids = serializer.validated_data.get("tags")
+        doc_data = serializer.validated_data.get("document")
+        doc_name = serializer.validated_data.get("filename")
+
+        def safeId(data):
+            return data.id if data is not None else None
+
+        correspondent_id = safeId(serializer.validated_data.get("correspondent"))
+        document_type_id = safeId(serializer.validated_data.get("document_type"))
+
+        if serializer.validated_data.get("tags"):
+            tag_ids = [tag.id for tag in serializer.validated_data.get("tags")]
+        else:
+            tag_ids = None
+
         title = serializer.validated_data.get("title")
         created = serializer.validated_data.get("created")
         archive_serial_number = serializer.validated_data.get("archive_serial_number")
@@ -770,7 +781,15 @@ class PostDocumentView(GenericAPIView):
             pathvalidate.sanitize_filename(doc_name),
         )
 
-        temp_file_path.write_bytes(doc_data)
+        if len(doc_data) > 1:
+            temp_file_path.write_bytes(
+                img2pdf.convert(
+                    list(map(lambda d: d.file, doc_data)),
+                    rotation=img2pdf.Rotation.ifvalid,
+                ),
+            )
+        else:
+            temp_file_path.write_bytes(doc_data[0].file.read())
 
         os.utime(temp_file_path, times=(t, t))
 

@@ -10,11 +10,31 @@
   </div>
   <div content tourAnchor="tour.upload-widget">
     <form>
+      <div class="row">
+        <div class="col-auto form-check form-switch ms-auto">
+          <label class="form-check-label"><input class="form-check-input" type="checkbox" role="switch" name="mergeStagedFiles" [(ngModel)]="mergeStagedFiles" [disabled]="stagedFiles.length > 0">Merge files</label>
+        </div>
+      </div>
       <ngx-file-drop dropZoneLabel="Drop documents here or" browseBtnLabel="Browse files" (onFileDrop)="dropped($event)"
         (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" dropZoneClassName="bg-light card"
         multiple="true" contentClassName="justify-content-center d-flex align-items-center py-5 px-2" [showBrowseBtn]=true
         browseBtnClassName="btn btn-sm btn-outline-primary ms-2" i18n-dropZoneLabel i18n-browseBtnLabel>
       </ngx-file-drop>
+      <ng-container *ngIf="stagedFiles.length > 0">
+        <ul class="list-group text-dark bg-light my-2" cdkDropList (cdkDropListDropped)="reorderStaged($event)">
+          <li *ngFor="let file of stagedFiles; let i = index" class="list-group-item staged-file" cdkDrag>{{file.fileEntry.name}}<button class="btn-close float-end" aria-label="Remove" (click)="unstage(i)"></button></li>
+        </ul>
+      </ng-container>
+      <div *ngIf="mergeStagedFiles" class="row mt-2">
+        <div class="col input-group-sm">
+          <input type="text" class="form-control" placeholder="Merged filename.pdf" name="mergedFileName" [(ngModel)]="mergedFilename" />
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-sm btn-outline-primary" (click)="uploadStaged()" [disabled]="(stagedFiles.length < 2) || (mergedFilename.length === 0)">
+            <span i18n>Upload files</span>
+          </button>
+        </div>
+      </div>
     </form>
     <p class="mt-3" *ngIf="getStatus().length > 0">{{getStatusSummary()}}</p>
     <div *ngFor="let status of getStatus()">
