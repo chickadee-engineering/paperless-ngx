@@ -45,12 +45,16 @@ describe('UploadDocumentsService', () => {
         )
       },
     }
-    uploadDocumentsService.uploadFiles([
-      {
-        relativePath: 'path/to/file.pdf',
-        fileEntry,
-      },
-    ])
+    uploadDocumentsService.uploadFiles(
+      [
+        {
+          relativePath: 'path/to/file.pdf',
+          fileEntry,
+        },
+      ],
+      false,
+      null
+    )
     const req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}documents/post_document/`
     )
@@ -73,12 +77,16 @@ describe('UploadDocumentsService', () => {
         )
       },
     }
-    uploadDocumentsService.uploadFiles([
-      {
-        relativePath: 'path/to/file.pdf',
-        fileEntry,
-      },
-    ])
+    uploadDocumentsService.uploadFiles(
+      [
+        {
+          relativePath: 'path/to/file.pdf',
+          fileEntry,
+        },
+      ],
+      false,
+      null
+    )
 
     expect(consumerStatusService.getConsumerStatusNotCompleted()).toHaveLength(
       1
@@ -116,12 +124,16 @@ describe('UploadDocumentsService', () => {
         )
       },
     }
-    uploadDocumentsService.uploadFiles([
-      {
-        relativePath: 'path/to/file.pdf',
-        fileEntry,
-      },
-    ])
+    uploadDocumentsService.uploadFiles(
+      [
+        {
+          relativePath: 'path/to/file.pdf',
+          fileEntry,
+        },
+      ],
+      false,
+      null
+    )
 
     let req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}documents/post_document/`
@@ -143,12 +155,16 @@ describe('UploadDocumentsService', () => {
       consumerStatusService.getConsumerStatus(FileStatusPhase.FAILED)
     ).toHaveLength(1)
 
-    uploadDocumentsService.uploadFiles([
-      {
-        relativePath: 'path/to/file.pdf',
-        fileEntry,
-      },
-    ])
+    uploadDocumentsService.uploadFiles(
+      [
+        {
+          relativePath: 'path/to/file.pdf',
+          fileEntry,
+        },
+      ],
+      false,
+      null
+    )
 
     req = httpTestingController.expectOne(
       `${environment.apiBaseUrl}documents/post_document/`
